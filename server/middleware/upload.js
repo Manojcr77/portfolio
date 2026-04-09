@@ -21,12 +21,11 @@ const resumeStorage = new CloudinaryStorage({
   cloudinary,
   params: async (req, file) => ({
     folder:        "portfolio/resume",
-    resource_type: "raw",
+    resource_type: "auto",
     format:        "pdf",
     public_id:     "resume"
   })
 })
-
 const imageFilter = (req, file, cb) => {
   if (!file.mimetype.startsWith("image/")) {
     return cb(new Error("Only image files are allowed"), false)

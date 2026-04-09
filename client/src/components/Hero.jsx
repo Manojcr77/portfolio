@@ -28,14 +28,10 @@ export default function Hero() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    API.get("/resume").then((res) => {
-     if (res.data?.path) {
-  let url = res.data.path
-  if (!url.endsWith(".pdf")) url = url + ".pdf"
-  setResumeUrl(url)
-}
-    }).catch(() => {})
-  }, [])
+  API.get("/resume").then((res) => {
+    if (res.data?.path) setResumeUrl(res.data.path)
+  }).catch(() => {})
+}, [])
 
   const handleLogin = async () => {
     if (!password.trim()) { setError("Enter password"); return }
