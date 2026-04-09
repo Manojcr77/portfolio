@@ -75,6 +75,9 @@ async function connectDB() {
   await ensureAdmin()
 }
 
+// ── Health check (no DB needed)
+app.get("/api/health", (req, res) => res.json({ status: "ok" }))
+
 // ── Connect DB before every request
 app.use(async (req, res, next) => {
   try {
