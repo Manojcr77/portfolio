@@ -19,11 +19,12 @@ const projectStorage = new CloudinaryStorage({
 
 const resumeStorage = new CloudinaryStorage({
   cloudinary,
-  params: {
+  params: async (req, file) => ({
     folder:        "portfolio/resume",
-    allowed_formats: ["pdf"],
-    resource_type: "raw"
-  }
+    resource_type: "raw",
+    format:        "pdf",
+    public_id:     "resume"
+  })
 })
 
 const imageFilter = (req, file, cb) => {
