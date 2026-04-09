@@ -20,18 +20,9 @@ const isDev = process.env.NODE_ENV !== "production"
 // ── Security headers
 app.use(helmet())
 
-// ── CORS
-const allowedOrigins = [
-  process.env.CLIENT_URL,
-  ...(isDev ? ["http://localhost:5173", "http://localhost:5174"] : [])
-].filter(Boolean)
-
+// ── CORS (allow all for now)
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin && isDev) return callback(null, true)
-    if (origin && allowedOrigins.includes(origin)) return callback(null, true)
-    callback(new Error("Not allowed by CORS"))
-  },
+  origin: true,
   credentials: true
 }))
 
@@ -96,9 +87,6 @@ app.use("/api/skills",                  require("./routes/skills"))
 app.use("/api/projects",                require("./routes/projects"))
 app.use("/api/contact", contactLimiter, require("./routes/contact"))
 app.use("/api/resume",                  require("./routes/resume"))
-
-// ── Health check
-app.get("/api/health", (req, res) => res.json({ status: "ok" }))
 
 // ── Global error handler
 app.use((err, req, res, next) => {
