@@ -20,6 +20,7 @@ export default function FloatingNav() {
 
   return (
     <div
+      className="md:hidden"
       style={{
         position: "fixed",
         bottom: 32,

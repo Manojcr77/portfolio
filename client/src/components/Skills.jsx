@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react"
-import { motion, useInView } from "framer-motion"
+import { motion, useInView, AnimatePresence } from "framer-motion"
 import { fadeUp, staggerContainer } from "../animations/variants"
 import API from "../utils/api"
 
@@ -13,29 +13,66 @@ const defaultSkills = [
 ]
 
 const colors = {
-  "AI/ML":   { text: "text-violet-400", bg: "bg-violet-500/10", border: "border-violet-500/20", bar: "from-violet-500 to-purple-400" },
-  Frontend:  { text: "text-cyan-400",   bg: "bg-cyan-500/10",   border: "border-cyan-500/20",   bar: "from-cyan-500 to-blue-400"    },
-  Backend:   { text: "text-green-400",  bg: "bg-green-500/10",  border: "border-green-500/20",  bar: "from-green-500 to-emerald-400"},
-  General:   { text: "text-slate-400",  bg: "bg-slate-500/10",  border: "border-slate-500/20",  bar: "from-slate-500 to-slate-400" },
+  "AI/ML":    { text: "#a78bfa", bg: "rgba(167,139,250,0.08)", border: "rgba(167,139,250,0.2)", barFrom: "#7c3aed", barTo: "#a78bfa", glow: "rgba(167,139,250,0.35)" },
+  Frontend:   { text: "#22d3ee", bg: "rgba(34,211,238,0.08)",  border: "rgba(34,211,238,0.2)",  barFrom: "#0e7490", barTo: "#22d3ee", glow: "rgba(34,211,238,0.35)"   },
+  Backend:    { text: "#34d399", bg: "rgba(52,211,153,0.08)",  border: "rgba(52,211,153,0.2)",  barFrom: "#059669", barTo: "#34d399", glow: "rgba(52,211,153,0.35)"   },
+  General:    { text: "#94a3b8", bg: "rgba(148,163,184,0.08)", border: "rgba(148,163,184,0.2)", barFrom: "#475569", barTo: "#94a3b8", glow: "rgba(148,163,184,0.25)"  },
 }
 
+const categoryIcons = { "AI/ML": "🤖", Frontend: "🎨", Backend: "⚙️", General: "🔧" }
+
 function SkillBar({ name, level, category, animate }) {
+  const [hovered, setHovered] = useState(false)
   const c = colors[category] || colors.General
+
   return (
-    <motion.div variants={fadeUp} className="glass rounded-xl p-4 border border-white/8 card-hover group">
-      <div className="flex justify-between items-start mb-3">
+    <motion.div
+      variants={fadeUp}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        background: hovered ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.03)",
+        border: `1px solid ${hovered ? c.border : "rgba(255,255,255,0.08)"}`,
+        borderRadius: 16, padding: "18px 20px",
+        transition: "all 0.35s cubic-bezier(0.22,1,0.36,1)",
+        transform: hovered ? "translateY(-5px)" : "translateY(0)",
+        boxShadow: hovered ? `0 16px 40px rgba(0,0,0,0.3), 0 0 20px ${c.glow}` : "none",
+        cursor: "default",
+      }}
+    >
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
         <div>
-          <p className="text-sm font-medium text-white mb-1">{name}</p>
-          <span className={`inline-block mono text-[10px] px-2 py-0.5 rounded-full ${c.bg} ${c.border} ${c.text} border`}>{category}</span>
+          <p style={{ fontSize: 13, fontWeight: 600, color: "#f1f5f9", marginBottom: 6, letterSpacing: "0.01em" }}>{name}</p>
+          <span style={{
+            display: "inline-flex", alignItems: "center", gap: 5,
+            fontSize: 10, padding: "3px 10px", borderRadius: 999,
+            background: c.bg, border: `1px solid ${c.border}`, color: c.text,
+            fontFamily: "JetBrains Mono, monospace", fontWeight: 500,
+          }}>
+            <span style={{ fontSize: 11 }}>{categoryIcons[category] || "🔧"}</span>
+            {category}
+          </span>
         </div>
-        <span className={`font-display text-xl font-bold ${c.text}`}>{level}%</span>
+        <motion.span
+          animate={{ color: hovered ? c.text : "#64748b" }}
+          style={{ fontFamily: "Syne, sans-serif", fontSize: 22, fontWeight: 800 }}
+        >
+          {level}%
+        </motion.span>
       </div>
-      <div className="w-full h-1.5 rounded-full bg-white/5">
+
+      {/* Bar track */}
+      <div style={{ width: "100%", height: 6, borderRadius: 999, background: "rgba(255,255,255,0.05)", overflow: "hidden" }}>
         <motion.div
-          className={`h-full rounded-full bg-gradient-to-r ${c.bar}`}
           initial={{ width: 0 }}
           animate={{ width: animate ? `${level}%` : 0 }}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+          transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+          style={{
+            height: "100%", borderRadius: 999,
+            background: `linear-gradient(90deg, ${c.barFrom}, ${c.barTo})`,
+            boxShadow: hovered ? `0 0 12px ${c.glow}` : "none",
+            transition: "box-shadow 0.3s",
+          }}
         />
       </div>
     </motion.div>
@@ -58,27 +95,59 @@ export default function Skills() {
   const filtered   = activeCategory === "All" ? skills : skills.filter((s) => (s.category || "General") === activeCategory)
 
   return (
-    <section id="skills" className="relative px-6 md:px-16 py-16" ref={ref}>
+    <section id="skills" className="relative px-6 md:px-16 py-20" ref={ref}>
       <motion.div variants={fadeUp} initial="hidden" animate={inView ? "visible" : "hidden"} className="text-center mb-14">
         <p className="section-tag mb-3">02 / skills</p>
         <h2 className="font-display text-4xl md:text-5xl font-bold gradient-text">Technical Arsenal</h2>
+        <p style={{ color: "#64748b", fontSize: 14, marginTop: 12 }}>Tools & technologies I work with every day</p>
       </motion.div>
 
-      <motion.div variants={fadeUp} initial="hidden" animate={inView ? "visible" : "hidden"} className="flex flex-wrap gap-2 justify-center mb-10">
-        {categories.map((cat) => (
-          <button key={cat} onClick={() => setActiveCategory(cat)}
-            className={`mono text-xs px-4 py-2 rounded-full border transition-all duration-300 ${activeCategory === cat ? "bg-cyan-500/15 border-cyan-500/40 text-cyan-400" : "bg-white/3 border-white/10 text-slate-500 hover:text-slate-300"}`}>
-            {cat}
-          </button>
-        ))}
+      {/* Category filter pills */}
+      <motion.div
+        variants={fadeUp} initial="hidden" animate={inView ? "visible" : "hidden"}
+        style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center", marginBottom: 40 }}
+      >
+        {categories.map((cat) => {
+          const c = colors[cat] || colors.General
+          const active = activeCategory === cat
+          return (
+            <motion.button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.96 }}
+              style={{
+                padding: "8px 20px", borderRadius: 999, fontSize: 12, cursor: "pointer",
+                fontFamily: "JetBrains Mono, monospace", fontWeight: 500,
+                transition: "all 0.25s",
+                background: active ? (colors[cat]?.bg || "rgba(34,211,238,0.1)") : "rgba(255,255,255,0.03)",
+                border: `1px solid ${active ? (colors[cat]?.border || "rgba(34,211,238,0.4)") : "rgba(255,255,255,0.1)"}`,
+                color: active ? (colors[cat]?.text || "#22d3ee") : "#64748b",
+                boxShadow: active ? `0 0 16px ${colors[cat]?.glow || "rgba(34,211,238,0.2)"}` : "none",
+              }}
+            >
+              {cat === "All" ? "⚡ All" : `${categoryIcons[cat] || ""} ${cat}`}
+            </motion.button>
+          )
+        })}
       </motion.div>
 
-      <motion.div variants={staggerContainer} initial="hidden" animate={inView ? "visible" : "hidden"}
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-w-6xl mx-auto">
-        {filtered.map((skill) => (
-          <SkillBar key={skill._id || skill.name} name={skill.name} level={skill.level ?? 80} category={skill.category || "General"} animate={inView} />
-        ))}
-      </motion.div>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeCategory}
+          variants={staggerContainer} initial="hidden" animate="visible"
+          exit={{ opacity: 0, y: 10 }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-w-6xl mx-auto"
+        >
+          {filtered.map((skill) => (
+            <SkillBar
+              key={skill._id || skill.name}
+              name={skill.name} level={skill.level ?? 80}
+              category={skill.category || "General"} animate={inView}
+            />
+          ))}
+        </motion.div>
+      </AnimatePresence>
     </section>
   )
 }

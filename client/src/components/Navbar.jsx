@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react"
-import { FiMenu, FiX } from "react-icons/fi"
 
 export default function Navbar() {
-  const [scrolled,   setScrolled]   = useState(false)
-  const [menuOpen,   setMenuOpen]   = useState(false)
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -11,17 +9,16 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
-  const links = ["About", "Skills", "Projects"]
+  const links = ["About", "Skills", "Projects", "Contact"]
 
   const handleNav = (section) => {
-    setMenuOpen(false)
     const el = document.getElementById(section.toLowerCase())
     if (el) el.scrollIntoView({ behavior: "smooth" })
   }
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`hidden md:block fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled ? "bg-[#020617]/90 backdrop-blur-md shadow-md" : "bg-transparent"
       }`}
     >
@@ -33,7 +30,7 @@ export default function Navbar() {
         </span>
 
         {/* Desktop links — hidden on mobile */}
-        <ul className="hidden md:flex items-center gap-8">
+        <ul className="flex items-center gap-8">
           {links.map((link) => (
             <li key={link}>
               <button
@@ -46,30 +43,7 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* Hamburger button — visible only on mobile */}
-        <button
-          className="md:hidden text-gray-300 hover:text-cyan-400 transition"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
-        >
-          {menuOpen ? <FiX size={22} /> : <FiMenu size={22} />}
-        </button>
       </div>
-
-      {/* Mobile dropdown menu */}
-      {menuOpen && (
-        <div className="md:hidden bg-[#020617]/95 backdrop-blur-md border-t border-cyan-900/30 px-6 py-4 flex flex-col gap-4">
-          {links.map((link) => (
-            <button
-              key={link}
-              onClick={() => handleNav(link)}
-              className="text-left text-sm text-gray-300 hover:text-cyan-400 transition-colors duration-200 py-1"
-            >
-              {link}
-            </button>
-          ))}
-        </div>
-      )}
     </nav>
   )
 }
