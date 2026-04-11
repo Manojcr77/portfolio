@@ -2,14 +2,16 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { Suspense, lazy } from "react"
 import { Toaster } from "react-hot-toast"
 
-import Navbar from "./components/Navbar"
-import Hero from "./components/Hero"
-import About from "./components/About"
-import Skills from "./components/Skills"
-import Projects from "./components/Projects"
-import Contact from "./components/Contact"
-import Footer from "./components/Footer"
-import FloatingNav from "./components/FloatingNav"
+import Navbar         from "./components/Navbar"
+import Hero           from "./components/Hero"
+import About          from "./components/About"
+import Skills         from "./components/Skills"
+import Projects       from "./components/Projects"
+import Contact        from "./components/Contact"
+import Footer         from "./components/Footer"
+import FloatingNav    from "./components/FloatingNav"
+import CursorEffect   from "./components/CursorEffect"
+import ScrollProgress from "./components/ScrollProgress"
 
 const Admin          = lazy(() => import("./pages/Admin.jsx"))
 const ProjectDetails = lazy(() => import("./pages/ProjectDetails.jsx"))
@@ -17,6 +19,8 @@ const ProjectDetails = lazy(() => import("./pages/ProjectDetails.jsx"))
 function HomePage() {
   return (
     <>
+      <CursorEffect />
+      <ScrollProgress />
       <Navbar />
       <div className="grid-bg" />
       <Hero />
@@ -50,15 +54,16 @@ export default function App() {
       />
       <Suspense
         fallback={
-          <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#020617" }}>
-            <div style={{ width: 36, height: 36, borderRadius: "50%", border: "3px solid rgba(34,211,238,0.2)", borderTopColor: "#22d3ee", animation: "spin 0.8s linear infinite" }} />
+          <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#020617", flexDirection: "column", gap: 16 }}>
+            <div style={{ width: 44, height: 44, borderRadius: "50%", border: "3px solid rgba(34,211,238,0.15)", borderTopColor: "#22d3ee", animation: "spin 0.7s linear infinite" }} />
+            <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 11, color: "#334155", letterSpacing: "0.2em" }}>LOADING</span>
             <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
           </div>
         }
       >
         <Routes>
-          <Route path="/"           element={<HomePage />} />
-          <Route path="/admin"      element={<Admin />} />
+          <Route path="/"            element={<HomePage />} />
+          <Route path="/admin"       element={<Admin />} />
           <Route path="/project/:id" element={<ProjectDetails />} />
         </Routes>
       </Suspense>

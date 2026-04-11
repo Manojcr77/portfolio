@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -27,58 +27,101 @@ body {
   color: #e2e8f0;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  cursor: none;
 }
 
-h1, h2, h3, h4, h5, h6 { font-family: 'Syne', sans-serif; }
-code, pre, .mono { font-family: 'JetBrains Mono', monospace; }
-
-.bg-atmosphere {
-  background:
-    radial-gradient(ellipse at 15% 15%, rgba(34,211,238,0.12) 0%, transparent 50%),
-    radial-gradient(ellipse at 85% 50%, rgba(167,139,250,0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 90%, rgba(57,255,20,0.06) 0%, transparent 45%),
-    var(--navy);
+/* ── Custom cursor ─────────────────────────────── */
+#cursor-dot {
+  position: fixed;
+  width: 8px; height: 8px;
+  background: #22d3ee;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s, background 0.3s, width 0.3s, height 0.3s;
+  mix-blend-mode: screen;
+}
+#cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1.5px solid rgba(34,211,238,0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.12s ease, width 0.3s, height 0.3s, border-color 0.3s, background 0.3s;
+}
+body:has(a:hover) #cursor-ring,
+body:has(button:hover) #cursor-ring {
+  width: 52px; height: 52px;
+  border-color: rgba(167,139,250,0.6);
+  background: rgba(167,139,250,0.06);
 }
 
+/* ── Scroll progress bar ───────────────────────── */
+#scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #22d3ee, #a78bfa, #39ff14);
+  z-index: 9999;
+  transform-origin: left;
+  transition: none;
+}
+
+/* ── Grid background ───────────────────────────── */
 .grid-bg {
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(34,211,238,0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(34,211,238,0.06) 1px, transparent 1px);
+    linear-gradient(rgba(34,211,238,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34,211,238,0.05) 1px, transparent 1px);
   background-size: 64px 64px;
-  animation: gridMove 24s linear infinite;
+  animation: gridMove 20s linear infinite;
   z-index: -1;
   pointer-events: none;
 }
-
 @keyframes gridMove {
   from { transform: translateY(0); }
   to   { transform: translateY(-64px); }
 }
 
+/* ── Noise texture overlay ─────────────────────── */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+}
+
+/* ── Glass ─────────────────────────────────────── */
 .glass {
   backdrop-filter: blur(20px) saturate(160%);
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
 }
-
 .glass-strong {
   backdrop-filter: blur(40px) saturate(180%);
   background: rgba(255,255,255,0.07);
   border: 1px solid rgba(255,255,255,0.12);
 }
 
+/* ── Glow utilities ────────────────────────────── */
 .glow-cyan   { box-shadow: var(--glow-cyan); }
 .glow-violet { box-shadow: var(--glow-violet); }
 
+/* ── Gradient text ─────────────────────────────── */
 .gradient-text {
   background: linear-gradient(135deg, var(--cyan), var(--violet));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-
 .gradient-text-green {
   background: linear-gradient(135deg, var(--neon), var(--cyan));
   -webkit-background-clip: text;
@@ -86,6 +129,21 @@ code, pre, .mono { font-family: 'JetBrains Mono', monospace; }
   background-clip: text;
 }
 
+/* ── Animated gradient text (shimmer) ──────────── */
+.gradient-text-animated {
+  background: linear-gradient(135deg, #22d3ee 0%, #a78bfa 40%, #22d3ee 80%, #39ff14 100%);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmerText 5s linear infinite;
+}
+@keyframes shimmerText {
+  0%   { background-position: 0% center; }
+  100% { background-position: 300% center; }
+}
+
+/* ── Border gradient ───────────────────────────── */
 .border-gradient { position: relative; }
 .border-gradient::before {
   content: "";
@@ -100,35 +158,37 @@ code, pre, .mono { font-family: 'JetBrains Mono', monospace; }
   pointer-events: none;
 }
 
+/* ── Buttons ───────────────────────────────────── */
 .btn-primary {
   @apply px-7 py-3 rounded-xl font-semibold text-sm tracking-wide transition-all duration-300;
   background: linear-gradient(135deg, var(--cyan-dim), var(--violet-dim));
   border: 1px solid rgba(34,211,238,0.4);
   color: #fff;
+  cursor: none;
 }
 .btn-primary:hover {
   background: linear-gradient(135deg, var(--cyan), var(--violet));
   box-shadow: 0 0 32px rgba(34,211,238,0.4), 0 0 64px rgba(167,139,250,0.25);
   transform: translateY(-2px);
 }
-
 .btn-outline {
   @apply px-7 py-3 rounded-xl font-semibold text-sm tracking-wide transition-all duration-300;
   background: transparent;
   border: 1px solid rgba(34,211,238,0.5);
   color: var(--cyan);
+  cursor: none;
 }
 .btn-outline:hover {
   background: rgba(34,211,238,0.08);
   box-shadow: var(--glow-cyan);
   transform: translateY(-2px);
 }
-
 .btn-ghost {
   @apply px-7 py-3 rounded-xl font-semibold text-sm tracking-wide transition-all duration-300;
   background: transparent;
   border: 1px solid rgba(255,255,255,0.12);
   color: #94a3b8;
+  cursor: none;
 }
 .btn-ghost:hover {
   background: rgba(255,255,255,0.05);
@@ -137,6 +197,7 @@ code, pre, .mono { font-family: 'JetBrains Mono', monospace; }
   transform: translateY(-2px);
 }
 
+/* ── Section tag ───────────────────────────────── */
 .section-tag {
   @apply text-xs tracking-widest uppercase;
   font-family: 'JetBrains Mono', monospace;
@@ -144,32 +205,172 @@ code, pre, .mono { font-family: 'JetBrains Mono', monospace; }
   opacity: 0.8;
 }
 
-::-webkit-scrollbar        { width: 6px; }
+/* ── Scrollbar ─────────────────────────────────── */
+::-webkit-scrollbar        { width: 4px; }
 ::-webkit-scrollbar-track  { background: var(--navy); }
-::-webkit-scrollbar-thumb  { background: var(--cyan-dim); border-radius: 3px; }
+::-webkit-scrollbar-thumb  {
+  background: linear-gradient(180deg, #22d3ee, #a78bfa);
+  border-radius: 2px;
+}
 
 ::selection { background: rgba(34,211,238,0.25); }
 
-#tsparticles {
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  pointer-events: none;
-}
-
-.card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+/* ── Card hover ────────────────────────────────── */
+.card-hover { transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s; }
 .card-hover:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 30px rgba(34,211,238,0.1);
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 24px 48px rgba(0,0,0,0.4), 0 0 32px rgba(34,211,238,0.1);
 }
 
+/* ── Float animation ───────────────────────────── */
 .float { animation: float 6s ease-in-out infinite; }
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50%       { transform: translateY(-14px); }
 }
 
-/* ✅ admin-surface with higher z-index to cover homepage */
+/* ── Pulse dot ─────────────────────────────────── */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.8); }
+}
+
+/* ── Reveal line animation (section headings) ──── */
+.reveal-line {
+  overflow: hidden;
+  display: block;
+}
+.reveal-line span {
+  display: block;
+  animation: revealUp 0.8s cubic-bezier(0.22,1,0.36,1) both;
+}
+@keyframes revealUp {
+  from { transform: translateY(110%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* ── Glowing ring around section numbers ───────── */
+.section-number {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid rgba(34,211,238,0.3);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; color: #22d3ee;
+  animation: ringPulse 3s ease-in-out infinite;
+}
+@keyframes ringPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(34,211,238,0.3); }
+  50%       { box-shadow: 0 0 0 8px rgba(34,211,238,0); }
+}
+
+/* ── Magnetic button base ──────────────────────── */
+.mag-btn { position: relative; display: inline-flex; cursor: none; }
+
+/* ── Tilt card ─────────────────────────────────── */
+.tilt-card {
+  transform-style: preserve-3d;
+  transition: transform 0.1s ease;
+}
+
+/* ── Floating particles (CSS only) ─────────────── */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: floatParticle linear infinite;
+  opacity: 0;
+}
+@keyframes floatParticle {
+  0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.3; }
+  100% { transform: translateY(-100px) scale(1); opacity: 0; }
+}
+
+/* ── Beam / spotlight sweep on cards ───────────── */
+.beam-card {
+  position: relative;
+  overflow: hidden;
+}
+.beam-card::after {
+  content: "";
+  position: absolute;
+  top: -50%; left: -60%;
+  width: 40%; height: 200%;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255,255,255,0.06) 50%,
+    transparent 60%
+  );
+  transform: skewX(-20deg);
+  transition: left 0s;
+  pointer-events: none;
+}
+.beam-card:hover::after {
+  left: 120%;
+  transition: left 0.7s ease;
+}
+
+/* ── Underline grow on hover ───────────────────── */
+.underline-grow {
+  position: relative;
+  display: inline-block;
+}
+.underline-grow::after {
+  content: "";
+  position: absolute;
+  bottom: -2px; left: 0;
+  width: 0; height: 1.5px;
+  background: linear-gradient(90deg, #22d3ee, #a78bfa);
+  border-radius: 1px;
+  transition: width 0.35s cubic-bezier(0.22,1,0.36,1);
+}
+.underline-grow:hover::after { width: 100%; }
+
+/* ── Skeleton shimmer ──────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
+  background-size: 200% auto;
+  animation: skeleton 1.5s linear infinite;
+}
+@keyframes skeleton {
+  from { background-position: 200% center; }
+  to   { background-position: -200% center; }
+}
+
+/* ── Glow text pulse ───────────────────────────── */
+.glow-text {
+  animation: glowText 3s ease-in-out infinite;
+}
+@keyframes glowText {
+  0%, 100% { text-shadow: 0 0 20px rgba(34,211,238,0.4); }
+  50%       { text-shadow: 0 0 40px rgba(34,211,238,0.8), 0 0 60px rgba(167,139,250,0.4); }
+}
+
+/* ── Border animate (rotating gradient border) ─── */
+.border-animate {
+  position: relative;
+  border-radius: 20px;
+}
+.border-animate::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: conic-gradient(from 0deg, #22d3ee, #a78bfa, #39ff14, #22d3ee);
+  z-index: -1;
+  animation: rotateBorder 4s linear infinite;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.border-animate:hover::before { opacity: 1; }
+@keyframes rotateBorder {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Admin styles ──────────────────────────────── */
 .admin-surface {
   background: #f8fafc;
   color: #0f172a;
@@ -177,17 +378,19 @@ code, pre, .mono { font-family: 'JetBrains Mono', monospace; }
   z-index: 9999;
   min-height: 100vh;
 }
-
-/* ✅ single pulse-dot keyframe */
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.4; }
-}
 body.admin-page .grid-bg,
-body.admin-page canvas {
-  display: none !important;
-}
-
+body.admin-page canvas { display: none !important; }
 body.admin-page {
   background: #f8fafc !important;
+  cursor: auto;
+}
+body.admin-page #cursor-dot,
+body.admin-page #cursor-ring { display: none; }
+
+/* ── tsparticles ───────────────────────────────── */
+#tsparticles {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
 }
