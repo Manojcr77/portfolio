@@ -5,17 +5,19 @@
 @tailwind utilities;
 
 :root {
-  --navy:       #020617;
-  --ink:        #0a0f1e;
-  --cyan:       #22d3ee;
-  --cyan-dim:   #0e7490;
-  --violet:     #a78bfa;
-  --violet-dim: #5b21b6;
-  --neon:       #39ff14;
-  --glass-bg:   rgba(255,255,255,0.04);
+  --navy:         #020617;
+  --ink:          #0a0f1e;
+  --cyan:         #22d3ee;
+  --cyan-dim:     #0e7490;
+  --violet:       #a78bfa;
+  --violet-dim:   #5b21b6;
+  --neon:         #39ff14;
+  --pink:         #f472b6;
+  --glass-bg:     rgba(255,255,255,0.04);
   --glass-border: rgba(255,255,255,0.08);
-  --glow-cyan:  0 0 24px rgba(34,211,238,0.35);
-  --glow-violet:0 0 24px rgba(167,139,250,0.35);
+  --glow-cyan:    0 0 24px rgba(34,211,238,0.35);
+  --glow-violet:  0 0 24px rgba(167,139,250,0.35);
+  --glow-neon:    0 0 24px rgba(57,255,20,0.35);
 }
 
 html { scroll-behavior: smooth; }
@@ -41,6 +43,7 @@ body {
   transform: translate(-50%, -50%);
   transition: transform 0.1s, background 0.3s, width 0.3s, height 0.3s;
   mix-blend-mode: screen;
+  box-shadow: 0 0 10px rgba(34,211,238,0.8), 0 0 20px rgba(34,211,238,0.4);
 }
 #cursor-ring {
   position: fixed;
@@ -55,8 +58,9 @@ body {
 body:has(a:hover) #cursor-ring,
 body:has(button:hover) #cursor-ring {
   width: 52px; height: 52px;
-  border-color: rgba(167,139,250,0.6);
-  background: rgba(167,139,250,0.06);
+  border-color: rgba(167,139,250,0.7);
+  background: rgba(167,139,250,0.07);
+  box-shadow: 0 0 20px rgba(167,139,250,0.2);
 }
 
 /* ── Scroll progress bar ───────────────────────── */
@@ -68,6 +72,7 @@ body:has(button:hover) #cursor-ring {
   z-index: 9999;
   transform-origin: left;
   transition: none;
+  box-shadow: 0 0 8px rgba(34,211,238,0.6);
 }
 
 /* ── Grid background ───────────────────────────── */
@@ -114,6 +119,7 @@ body:has(button:hover) #cursor-ring {
 /* ── Glow utilities ────────────────────────────── */
 .glow-cyan   { box-shadow: var(--glow-cyan); }
 .glow-violet { box-shadow: var(--glow-violet); }
+.glow-neon   { box-shadow: var(--glow-neon); }
 
 /* ── Gradient text ─────────────────────────────── */
 .gradient-text {
@@ -366,6 +372,99 @@ body:has(button:hover) #cursor-ring {
 }
 .border-animate:hover::before { opacity: 1; }
 @keyframes rotateBorder {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Page transition fade-in ───────────────────── */
+.page-enter {
+  animation: pageFadeIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Lightbox ──────────────────────────────────── */
+.lightbox-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(2, 6, 23, 0.95);
+  backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+  padding: 24px;
+}
+.lightbox-img {
+  max-width: 90vw;
+  max-height: 88vh;
+  border-radius: 16px;
+  object-fit: contain;
+  box-shadow:
+    0 0 0 1px rgba(34,211,238,0.2),
+    0 40px 120px rgba(0,0,0,0.8),
+    0 0 80px rgba(34,211,238,0.12);
+  cursor: default;
+}
+.lightbox-close {
+  position: fixed;
+  top: 20px; right: 20px;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: none;
+  transition: all 0.2s;
+  font-size: 20px;
+}
+.lightbox-close:hover {
+  background: rgba(34,211,238,0.15);
+  border-color: rgba(34,211,238,0.4);
+}
+
+/* ── Neon scanline effect (optional hero use) ──── */
+.scanlines {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+  z-index: 1;
+}
+
+/* ── Neon flicker ──────────────────────────────── */
+.neon-flicker {
+  animation: neonFlicker 4s ease-in-out infinite;
+}
+@keyframes neonFlicker {
+  0%, 95%, 100% { opacity: 1; }
+  96%            { opacity: 0.6; }
+  97%            { opacity: 1; }
+  98%            { opacity: 0.4; }
+  99%            { opacity: 1; }
+}
+
+/* ── Orbit ring decoration ─────────────────────── */
+.orbit-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(34,211,238,0.1);
+  animation: orbitSpin linear infinite;
+  pointer-events: none;
+}
+@keyframes orbitSpin {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
 }

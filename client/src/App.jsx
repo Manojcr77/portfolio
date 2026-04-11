@@ -19,7 +19,6 @@ const ProjectDetails = lazy(() => import("./pages/ProjectDetails.jsx"))
 function HomePage() {
   return (
     <>
-      <CursorEffect />
       <ScrollProgress />
       <Navbar />
       <div className="grid-bg" />
@@ -37,6 +36,9 @@ function HomePage() {
 export default function App() {
   return (
     <Router>
+      {/* CursorEffect is global — works on ALL pages including /project/:id */}
+      <CursorEffect />
+
       <Toaster
         position="top-right"
         toastOptions={{
@@ -52,12 +54,27 @@ export default function App() {
           error:   { iconTheme: { primary: "#f87171", secondary: "#0d1117" } },
         }}
       />
+
       <Suspense
         fallback={
-          <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#020617", flexDirection: "column", gap: 16 }}>
-            <div style={{ width: 44, height: 44, borderRadius: "50%", border: "3px solid rgba(34,211,238,0.15)", borderTopColor: "#22d3ee", animation: "spin 0.7s linear infinite" }} />
-            <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 11, color: "#334155", letterSpacing: "0.2em" }}>LOADING</span>
-            <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
+          <div style={{
+            minHeight: "100vh", display: "flex", alignItems: "center",
+            justifyContent: "center", background: "#020617",
+            flexDirection: "column", gap: 16,
+          }}>
+            <div style={{
+              width: 44, height: 44, borderRadius: "50%",
+              border: "3px solid rgba(34,211,238,0.15)",
+              borderTopColor: "#22d3ee",
+              animation: "spin 0.7s linear infinite",
+            }} />
+            <span style={{
+              fontFamily: "JetBrains Mono, monospace",
+              fontSize: 11, color: "#334155", letterSpacing: "0.2em",
+            }}>
+              LOADING
+            </span>
+            <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
           </div>
         }
       >
