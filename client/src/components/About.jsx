@@ -15,7 +15,6 @@ const stats = [
   { label: "Projects Built",  value: 4,   suffix: "+" },
   { label: "Technologies",    value: 10,  suffix: "+" },
   { label: "GitHub Commits",  value: 150, suffix: "+" },
-  { label: "CGPA",            value: 8.5, suffix: "", decimals: 1 },
 ]
 
 function CountUp({ target, suffix, decimals = 0, active }) {

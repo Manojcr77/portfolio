@@ -155,7 +155,7 @@ export default function Contact() {
           }}
         >
           {[
-            { name: "name",  Icon: FiUser, placeholder: "Your name",         type: "text"  },
+            { name: "name",  Icon: FiUser, placeholder: "gigi",         type: "text"  },
             { name: "email", Icon: FiMail, placeholder: "you@example.com",   type: "email" },
           ].map(({ name, Icon, placeholder, type }) => (
             <div key={name}>
