@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { Suspense, lazy } from "react"
 import { Toaster } from "react-hot-toast"
+import { Analytics } from "@vercel/analytics/react"  // ← ADD THIS
 
 import Navbar         from "./components/Navbar"
 import Hero           from "./components/Hero"
@@ -36,8 +37,8 @@ function HomePage() {
 export default function App() {
   return (
     <Router>
-      {/* CursorEffect is global — works on ALL pages including /project/:id */}
       <CursorEffect />
+      <Analytics />  {/* ← ADD THIS */}
 
       <Toaster
         position="top-right"
