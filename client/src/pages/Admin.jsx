@@ -183,7 +183,7 @@ export default function Admin() {
     setPwLoading(true)
     try {
       await API.put("/auth/change-password", { currentPassword: current, newPassword: next })
-      toast.success("Password changed! Logging you out…")
+      toast.success(`Password changed to: ${next} — save it! Logging you out…`, { duration: 6000 }) 
       localStorage.removeItem("token")
       setTimeout(() => { window.location.href = "/" }, 1500)
     } catch (err) {
