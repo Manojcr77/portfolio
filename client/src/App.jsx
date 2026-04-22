@@ -1,18 +1,19 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { Suspense, lazy } from "react"
 import { Toaster } from "react-hot-toast"
-import { Analytics } from "@vercel/analytics/react"  // ← ADD THIS
+import { Analytics } from "@vercel/analytics/react"
 
-import Navbar         from "./components/Navbar"
-import Hero           from "./components/Hero"
-import About          from "./components/About"
-import Skills         from "./components/Skills"
-import Projects       from "./components/Projects"
-import Contact        from "./components/Contact"
-import Footer         from "./components/Footer"
-import FloatingNav    from "./components/FloatingNav"
-import CursorEffect   from "./components/CursorEffect"
-import ScrollProgress from "./components/ScrollProgress"
+import Navbar          from "./components/Navbar"
+import Hero            from "./components/Hero"
+import About           from "./components/About"
+import Skills          from "./components/Skills"
+import Projects        from "./components/Projects"
+import Contact         from "./components/Contact"
+import Footer          from "./components/Footer"
+import FloatingNav     from "./components/FloatingNav"
+import CursorEffect    from "./components/CursorEffect"
+import ScrollProgress  from "./components/ScrollProgress"
+import ThreeBackground from "./components/three/ThreeBackground"
 
 const Admin          = lazy(() => import("./pages/Admin.jsx"))
 const ProjectDetails = lazy(() => import("./pages/ProjectDetails.jsx"))
@@ -20,6 +21,7 @@ const ProjectDetails = lazy(() => import("./pages/ProjectDetails.jsx"))
 function HomePage() {
   return (
     <>
+      <ThreeBackground />
       <ScrollProgress />
       <Navbar />
       <div className="grid-bg" />
@@ -38,7 +40,7 @@ export default function App() {
   return (
     <Router>
       <CursorEffect />
-      <Analytics />  {/* ← ADD THIS */}
+      <Analytics />
 
       <Toaster
         position="top-right"
