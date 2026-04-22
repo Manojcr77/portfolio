@@ -24,7 +24,7 @@ function StarField() {
   })
   return (
     <Points ref={ref} positions={positions} stride={3}>
-      <PointMaterial transparent color="#e2e8f0" size={0.04} sizeAttenuation depthWrite={false} opacity={0.7} />
+      <PointMaterial transparent color="#e2e8f0" size={0.04} sizeAttenuation depthWrite={false} opacity={0.3} />
     </Points>
   )
 }
@@ -52,7 +52,7 @@ function GalaxyDust() {
   })
   return (
     <Points ref={ref} positions={positions} stride={3}>
-      <PointMaterial transparent color="#22d3ee" size={0.055} sizeAttenuation depthWrite={false} opacity={0.45} />
+      <PointMaterial transparent color="#22d3ee" size={0.055} sizeAttenuation depthWrite={false} opacity={0.18} />
     </Points>
   )
 }
@@ -76,12 +76,12 @@ function Sun() {
       {/* Corona glow */}
       <mesh ref={glowRef}>
         <sphereGeometry args={[1.6, 32, 32]} />
-        <meshBasicMaterial color="#ff9922" transparent opacity={0.06} />
+        <meshBasicMaterial color="#ff9922" transparent opacity={0.03} />
       </mesh>
       {/* Sun surface */}
       <mesh ref={ref}>
         <sphereGeometry args={[0.9, 64, 64]} />
-        <MeshDistortMaterial color="#ffcc44" distort={0.25} speed={2} transparent opacity={0.95} />
+        <MeshDistortMaterial color="#ffcc44" distort={0.25} speed={2} transparent opacity={0.5} />
       </mesh>
     </group>
   )
@@ -117,14 +117,14 @@ function Planet({ orbitRadius, orbitSpeed, orbitTilt, startAngle, size, color, d
       <Float speed={0.8} floatIntensity={0.3}>
         <mesh ref={planetRef}>
           <sphereGeometry args={[size, 48, 48]} />
-          <MeshDistortMaterial color={color} distort={distort} speed={1.5} transparent opacity={0.92} />
+          <MeshDistortMaterial color={color} distort={distort} speed={1.5} transparent opacity={0.5} />
         </mesh>
 
         {/* Ring system */}
         {hasRing && (
           <mesh rotation={[Math.PI / 3, 0, 0]}>
             <torusGeometry args={[size * 1.8, size * 0.18, 3, 64]} />
-            <meshBasicMaterial color={color} transparent opacity={0.25} />
+            <meshBasicMaterial color={color} transparent opacity={0.12} />
           </mesh>
         )}
 
@@ -132,7 +132,7 @@ function Planet({ orbitRadius, orbitSpeed, orbitTilt, startAngle, size, color, d
         {hasMoon && (
           <mesh ref={moonRef}>
             <sphereGeometry args={[size * 0.32, 16, 16]} />
-            <meshStandardMaterial color="#94a3b8" transparent opacity={0.85} />
+            <meshStandardMaterial color="#94a3b8" transparent opacity={0.4} />
           </mesh>
         )}
       </Float>
@@ -140,7 +140,7 @@ function Planet({ orbitRadius, orbitSpeed, orbitTilt, startAngle, size, color, d
       {/* Planet glow */}
       <mesh>
         <sphereGeometry args={[size * 1.5, 16, 16]} />
-        <meshBasicMaterial color={color} transparent opacity={0.06} />
+        <meshBasicMaterial color={color} transparent opacity={0.03} />
       </mesh>
     </group>
   )
@@ -159,7 +159,7 @@ function OrbitRing({ radius, tilt, color = "#ffffff" }) {
   const geo = useMemo(() => new THREE.BufferGeometry().setFromPoints(points), [points])
   return (
     <line geometry={geo} position={[0, 0, -4]}>
-      <lineBasicMaterial color={color} transparent opacity={0.08} />
+      <lineBasicMaterial color={color} transparent opacity={0.04} />
     </line>
   )
 }
@@ -184,7 +184,7 @@ function AsteroidBelt() {
   })
   return (
     <Points ref={ref} positions={positions} stride={3} position={[0, 0, -4]}>
-      <PointMaterial transparent color="#94a3b8" size={0.04} sizeAttenuation depthWrite={false} opacity={0.5} />
+      <PointMaterial transparent color="#94a3b8" size={0.04} sizeAttenuation depthWrite={false} opacity={0.2} />
     </Points>
   )
 }
@@ -203,7 +203,7 @@ function ShootingStar({ offset, startX, startY, startZ }) {
       ? progress * 10
       : progress > 0.7
         ? (1 - progress) * 3.3
-        : 0.85
+        : 0.4
   })
   return (
     <mesh ref={ref}>
@@ -236,10 +236,10 @@ export default function ThreeBackground() {
       gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
       dpr={[1, 1.5]}
     >
-      <ambientLight intensity={0.3} />
-      <pointLight position={[0, 0, -4]}  color="#ffcc44" intensity={3}   distance={30} />
-      <pointLight position={[0, 8, 2]}   color="#22d3ee" intensity={0.5} />
-      <pointLight position={[-8, -4, 0]} color="#a78bfa" intensity={0.4} />
+      <ambientLight intensity={0.15} />
+      <pointLight position={[0, 0, -4]}  color="#ffcc44" intensity={1.2} distance={30} />
+      <pointLight position={[0, 8, 2]}   color="#22d3ee" intensity={0.2} />
+      <pointLight position={[-8, -4, 0]} color="#a78bfa" intensity={0.15} />
 
       {/* Background */}
       <StarField />
