@@ -134,7 +134,7 @@ export default function Skills() {
           transition={{ delay: 0.4 }}
           style={{ color: "#475569", fontSize: 13, marginTop: 12, fontFamily: "JetBrains Mono, monospace" }}
         >
-          hover over any card to see it shine
+          
         </motion.p>
       </motion.div>
 
