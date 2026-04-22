@@ -153,8 +153,8 @@ export default function About() {
           {/* Social links */}
           <div style={{ display: "flex", gap: 12 }}>
             {[
-              { Icon: FiGithub,   href: "https://github.com/manoj-cr",     label: "GitHub"   },
-              { Icon: FiLinkedin, href: "https://linkedin.com/in/manoj-cr", label: "LinkedIn" },
+              { Icon: FiGithub,   href: "https://github.com/Manojcr77",     label: "GitHub"   },
+              { Icon: FiLinkedin, href: "https://www.linkedin.com/in/manoj-cr-251028333/", label: "LinkedIn" },
             ].map(({ Icon, href, label }) => (
               <motion.a
                 key={label} href={href} target="_blank" rel="noreferrer"

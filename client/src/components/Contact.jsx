@@ -6,8 +6,8 @@ import { fadeUp, fadeLeft, fadeRight } from "../animations/variants"
 import API from "../utils/api"
 
 const socials = [
-  { Icon: FiGithub,   label: "GitHub",   href: "https://github.com/manoj-cr",     color: "#f1f5f9" },
-  { Icon: FiLinkedin, label: "LinkedIn", href: "https://linkedin.com/in/manoj-cr", color: "#0ea5e9" },
+  { Icon: FiGithub,   label: "GitHub",   href: "https://github.com/Manojcr77",     color: "#f1f5f9" },
+  { Icon: FiLinkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/manoj-cr-251028333/", color: "#0ea5e9" },
   { Icon: FiMail,     label: "Email",    href: "mailto:manoj@example.com",          color: "#22d3ee" },
 ]
 
